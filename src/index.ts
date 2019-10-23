@@ -8,6 +8,7 @@ interface IWebSocketClient {
     reconnectRetryTimeout: number;
     reconnectRetryMaxNumber?: number;
     parsedMessage: boolean;
+    debug?: boolean;
   };
 
   webSocket?: WebSocket;
@@ -29,10 +30,12 @@ class WebSocketClient implements IWebSocketClient {
     reconnectRetryTimeout: number;
     parsedMessage: boolean;
     reconnectRetryMaxNumber?: number;
+    debug?: boolean;
   } = {
     shouldReconnect: true,
     reconnectRetryTimeout: 1000,
-    parsedMessage: true
+    parsedMessage: true,
+    debug: false
   };
 
   webSocket?: WebSocket;
@@ -48,20 +51,29 @@ class WebSocketClient implements IWebSocketClient {
   constructor(
     url: string,
     protocols?: string | string[],
-    options?: { shouldReconnect: boolean; reconnectRetry: number },
-    onOpen?: Function,
-    onMessage?: Function,
-    onClose?: Function,
-    onError?: Function
+    options?: { shouldReconnect: boolean; reconnectRetry: number }
   ) {
     this.url = url;
     this.protocols = protocols;
     this.options = options ? { ...this.options, ...options } : this.options;
-    this.onOpen = onOpen;
-    this.onMessage = onMessage;
-    this.onClose = onClose;
-    this.onError = onError;
   }
+
+  // INIT
+  addOnOpenHandler = (onOpen?: Function) => {
+    this.onOpen = onOpen;
+  };
+
+  addOnMessageHandler = (onMessage?: Function) => {
+    this.onMessage = onMessage;
+  };
+
+  addOnCloseHandler = (onClose?: Function) => {
+    this.onClose = onClose;
+  };
+
+  addOnErrorHandler = (onError?: Function) => {
+    this.onError = onError;
+  };
 
   // HELPERS
   getCurrentState() {
@@ -112,6 +124,12 @@ class WebSocketClient implements IWebSocketClient {
     return url;
   }
 
+  private debug(idn: string, message: string, data: any) {
+    if (this.options.debug) {
+      console.log(`[${idn}] ${message}`, data);
+    }
+  }
+
   // LIFE CYCLE
 
   connect() {
@@ -128,6 +146,7 @@ class WebSocketClient implements IWebSocketClient {
   }
 
   private onOpenHandler(event: Event) {
+    this.debug("socket-client", "onOpen", event);
     this.retryNumber = 0;
     if (this.onOpen) {
       this.onOpen(event);
@@ -135,6 +154,8 @@ class WebSocketClient implements IWebSocketClient {
   }
 
   private onMessageHandler(event: MessageEvent) {
+    this.debug("socket-client", "onMessage", event);
+
     if (this.onMessage) {
       let message = event.data;
       if (this.options.parsedMessage) {
@@ -148,6 +169,8 @@ class WebSocketClient implements IWebSocketClient {
   }
 
   private onCloseHandler = (event: CloseEvent) => {
+    this.debug("socket-client", "onClose", event);
+
     if (this.shouldRestart) {
       this.connect();
       return;
@@ -164,6 +187,8 @@ class WebSocketClient implements IWebSocketClient {
   };
 
   private onErrorHandler(event: Event) {
+    this.debug("socket-client", "onError", event);
+
     if (this.onError) {
       this.onError(event);
     }
