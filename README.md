@@ -50,7 +50,7 @@ new WebSocketClient(
     protocols?: string | string[],
     options?: {
         shouldReconnect: boolean;
-        reconnectRetry: number
+        reconnectRetry: number;
     }
 );
 ```
@@ -60,7 +60,7 @@ new WebSocketClient(
 Url is required parameter of type `string`.
 It is specifies WebSocket connection endpoint.
 
-E.g.
+Example: 
 
 `const url = 'http://your.cool.domain/ws/';`
 
