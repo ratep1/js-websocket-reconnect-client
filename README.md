@@ -6,11 +6,15 @@ This is light-weight JavaScript WebSocket library that supports reconnect
 
 To install the stable version if you are using [npm](https://www.npmjs.com/):
 
-`npm install js-websocket-reconnect-client`
+```shell
+npm install js-websocket-reconnect-client
+```
 
 or if you are using [yarn](https://yarnpkg.com/):
 
-`yarn add js-websocket-reconnect-client`
+```shell
+yarn add js-websocket-reconnect-client
+```
 
 ## Description
 
@@ -22,19 +26,21 @@ The `WebSocketClient` object provides the API for creating and managing a WebSoc
 
 Import js-websocket-reconnect-client module if you are using ES modules:
 
-`import WebSocketClient from 'js-websocket-reconnect-client';`
+```typescript
+import WebSocketClient from "js-websocket-reconnect-client";
+```
 
 This is simple example of js-websocket-reconnect-client usage:
 
-```
-import WebSocketClient from 'js-websocket-reconnect-client';
+```typescript
+import WebSocketClient from "js-websocket-reconnect-client";
 
-const URL = 'http://localhost:8000/ws/'; // set your url defined on server
+const URL = "http://localhost:8000/ws/"; // set your url defined on server
 
 const ws = new WebSocketClient(url);
 
 ws.addOnMessageHandler(message => {
-    console.log('[socket] message received', message);
+  console.log("[socket] message received", message);
 });
 
 ws.connect();
@@ -44,7 +50,7 @@ ws.connect();
 
 This is definition for creating new object:
 
-```
+```typescript
 new WebSocketClient(
     url: string,
     protocols?: string | string[],
@@ -57,7 +63,7 @@ new WebSocketClient(
 
 Example:
 
-```
+```typescript
 import WebSocketClient from 'js-websocket-reconnect-client';
 
 const url = "http://your.cool.domain/ws/";
@@ -80,7 +86,9 @@ It specifies WebSocket connection endpoint. This should be the URL to which the 
 
 Example:
 
-`const url = 'http://your.cool.domain/ws/';`
+```typescript
+const url = "http://your.cool.domain/ws/";
+```
 
 #### Protocols
 
@@ -88,7 +96,9 @@ Either a single protocol string or an array of protocol strings. These strings a
 
 Example:
 
-`const protocol = ["wamp", "soap"];`
+```typescript
+const protocol = ["wamp", "soap"];
+```
 
 #### Options
 
@@ -96,7 +106,7 @@ Options are extended, custom part of this package. It is possible to specify sev
 
 Definition:
 
-```
+```typescript
 options: {
     shouldReconnect: boolean;
     reconnectRetryTimeout: number;
@@ -108,7 +118,7 @@ options: {
 
 Default:
 
-```
+```javascript
 options: {
     shouldReconnect: true,
     reconnectRetryTimeout: 1000,
