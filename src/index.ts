@@ -164,7 +164,7 @@ class WebSocketClient implements IWebSocketClient {
         } catch (e) {}
       }
 
-      this.onMessage(message);
+      this.onMessage(message, event);
     }
   }
 
