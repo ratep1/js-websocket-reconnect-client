@@ -42,7 +42,7 @@ ws.connect();
 
 ### Creating object
 
-This is syntax for creating new object:
+This is definition for creating new object:
 
 ```
 new WebSocketClient(
@@ -55,15 +55,64 @@ new WebSocketClient(
 );
 ```
 
+Example:
+
+```
+import WebSocketClient from 'js-websocket-reconnect-client';
+
+const url = "http://your.cool.domain/ws/";
+const protocols = ["wamp", "soap"];
+const options = {
+    shouldReconnect: true;
+    reconnectRetryTimeout: 2000;
+    parsedMessage: true;
+    reconnectRetryMaxNumber: 10;
+    debug: false;
+}
+
+const webSocket = new WebSocketClient(url, protocols, options);
+```
+
 #### Url
 
-Url is required parameter of type `string`.
-It is specifies WebSocket connection endpoint.
+URL is required parameter of type `string`.
+It specifies WebSocket connection endpoint. This should be the URL to which the WebSocket server will respond.
 
-Example: 
+Example:
 
 `const url = 'http://your.cool.domain/ws/';`
 
 #### Protocols
 
+Either a single protocol string or an array of protocol strings. These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified protocol). If you don't specify a `protocol` string, an empty string is assumed.
+
+Example:
+
+`const protocol = ["wamp", "soap"];`
+
 #### Options
+
+Options are extended, custom part of this package. It is possible to specify several important features. If `options` object is not specified, a default values are is assumed.
+
+Definition:
+
+```
+options: {
+    shouldReconnect: boolean;
+    reconnectRetryTimeout: number;
+    parsedMessage: boolean;
+    reconnectRetryMaxNumber?: number;
+    debug?: boolean;
+}
+```
+
+Default:
+
+```
+options: {
+    shouldReconnect: true,
+    reconnectRetryTimeout: 1000,
+    parsedMessage: true,
+    debug: false
+}
+```
