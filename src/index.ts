@@ -134,7 +134,7 @@ class WebSocketClient implements IWebSocketClient {
 
   connect() {
     this.shouldClose = false;
-    this.webSocket = new WebSocket(this.url);
+    this.webSocket = new WebSocket(this.url, this.protocols);
 
     this.webSocket.onopen = event => this.onOpenHandler(event);
     this.webSocket.onmessage = event => this.onMessageHandler(event);
