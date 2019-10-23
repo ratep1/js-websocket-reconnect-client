@@ -52,12 +52,12 @@ This is definition for creating new object:
 
 ```typescript
 new WebSocketClient(
-    url: string,
-    protocols?: string | string[],
-    options?: {
-        shouldReconnect: boolean;
-        reconnectRetry: number;
-    }
+  url: string,
+  protocols?: string | string[],
+  options?: {
+    shouldReconnect: boolean;
+    reconnectRetry: number;
+  }
 );
 ```
 
@@ -69,11 +69,11 @@ import WebSocketClient from 'js-websocket-reconnect-client';
 const url = "http://your.cool.domain/ws/";
 const protocols = ["wamp", "soap"];
 const options = {
-    shouldReconnect: true;
-    reconnectRetryTimeout: 2000;
-    parsedMessage: true;
-    reconnectRetryMaxNumber: 10;
-    debug: false;
+  shouldReconnect: true;
+  reconnectRetryTimeout: 2000;
+  parsedMessage: true;
+  reconnectRetryMaxNumber: 10;
+  debug: false;
 }
 
 const webSocket = new WebSocketClient(url, protocols, options);
@@ -108,21 +108,33 @@ Definition:
 
 ```typescript
 options: {
-    shouldReconnect: boolean;
-    reconnectRetryTimeout: number;
-    parsedMessage: boolean;
-    reconnectRetryMaxNumber?: number;
-    debug?: boolean;
+  shouldReconnect: boolean;
+  reconnectRetryTimeout: number;
+  parsedMessage: boolean;
+  reconnectRetryMaxNumber?: number;
+  debug?: boolean;
 }
 ```
 
 Default:
 
 ```javascript
-options: {
-    shouldReconnect: true,
-    reconnectRetryTimeout: 1000,
-    parsedMessage: true,
-    debug: false
+const options = {
+  shouldReconnect: true,
+  reconnectRetryTimeout: 1000,
+  parsedMessage: true,
+  debug: false
+};
+```
+
+Example:
+
+```javascript
+const options = {
+  shouldReconnect: true;
+  reconnectRetryTimeout: 2000;
+  parsedMessage: true;
+  reconnectRetryMaxNumber: 10;
+  debug: false;
 }
 ```
