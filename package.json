@@ -1,6 +1,6 @@
 {
   "name": "js-websocket-reconnect-client",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "This is light-weight JavaScript WebSocket library that supports reconnect",
   "repository": "https://github.com/ratep1/js-websocket-reconnect-client.git",
   "author": "ratep1 <petar.maric18@gmail.com>",
@@ -8,7 +8,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "tsc"
+    "build": "tsc"
   },
   "devDependencies": {
     "typescript": "^3.6.4"
