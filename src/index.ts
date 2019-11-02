@@ -54,11 +54,7 @@ class WebSocketClient implements IWebSocketClient {
     options?: { shouldReconnect: boolean; reconnectRetry: number }
   ) {
     this.url = url;
-
-    this.protocols = protocols;
-    if (!protocols) {
-      this.protocols = undefined;
-    }
+    this.protocols = protocols || undefined;
     this.options = options ? { ...this.options, ...options } : this.options;
   }
 
