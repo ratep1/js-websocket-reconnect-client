@@ -138,3 +138,5 @@ const options = {
   debug: false;
 }
 ```
+
+### Object Life Cycle Function

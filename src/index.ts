@@ -54,7 +54,11 @@ class WebSocketClient implements IWebSocketClient {
     options?: { shouldReconnect: boolean; reconnectRetry: number }
   ) {
     this.url = url;
+
     this.protocols = protocols;
+    if (!protocols) {
+      this.protocols = undefined;
+    }
     this.options = options ? { ...this.options, ...options } : this.options;
   }
 
@@ -140,9 +144,6 @@ class WebSocketClient implements IWebSocketClient {
     this.webSocket.onmessage = event => this.onMessageHandler(event);
     this.webSocket.onclose = event => this.onCloseHandler(event);
     this.webSocket.onerror = event => this.onErrorHandler(event);
-
-    // onconnect retryNumber = 0
-    // onclose if should restart -> connect() && shouldRestart = false
   }
 
   private onOpenHandler(event: Event) {
