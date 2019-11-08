@@ -134,7 +134,11 @@ class WebSocketClient implements IWebSocketClient {
 
   connect() {
     this.shouldClose = false;
-    this.webSocket = new WebSocket(this.url, this.protocols);
+    if (this.protocols) {
+      this.webSocket = new WebSocket(this.url, this.protocols);
+    } else {
+      this.webSocket = new WebSocket(this.url);
+    }
 
     this.webSocket.onopen = event => this.onOpenHandler(event);
     this.webSocket.onmessage = event => this.onMessageHandler(event);
@@ -168,6 +172,10 @@ class WebSocketClient implements IWebSocketClient {
   private onCloseHandler = (event: CloseEvent) => {
     this.debug("socket-client", "onClose", event);
 
+    if (this.onClose) {
+      this.onClose(event);
+    }
+
     if (this.shouldRestart) {
       this.connect();
       return;
@@ -176,10 +184,6 @@ class WebSocketClient implements IWebSocketClient {
     if (!this.shouldClose) {
       this.reconnect();
       return;
-    }
-
-    if (this.onClose) {
-      this.onClose(event);
     }
   };
 
