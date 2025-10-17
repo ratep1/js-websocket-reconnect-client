@@ -12,7 +12,7 @@ A lightweight, modern TypeScript WebSocket client library with automatic reconne
 - 📦 **TypeScript First** - Full type safety and IntelliSense support
 - 🎯 **Event-Driven** - Clean event handler system
 - 🛡️ **Error Handling** - Robust error handling and recovery
-- 🧪 **Well Tested** - Comprehensive test suite with Jest
+- 🧪 **Well Tested** - Comprehensive test suite with Vitest
 - 🌐 **Universal** - Works in browsers and Node.js environments
 - 📱 **Lightweight** - Minimal bundle size with zero dependencies
 
