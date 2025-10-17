@@ -10,10 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎉 Complete Project Modernization
 
 ### Added
-- **Modern TypeScript 5.2.2** - Upgraded from legacy TypeScript 3.6.4
+- **Modern TypeScript 5.9.3** - Upgraded from legacy TypeScript 3.6.4
 - **Biome 2.2.6** - Ultra-fast unified linting and formatting (replaced ESLint + Prettier)
-- **Vite 5.4.8** - Lightning-fast build system with multi-format output (ESM, CJS, UMD)
-- **Vitest 2.1.2** - Native TypeScript testing framework (replaced Jest)
+- **Vite 7.1.10** - Lightning-fast build system with multi-format output (ESM, CJS, UMD)
+- **Vitest 3.2.4** - Native TypeScript testing framework (replaced Jest)
 - **Yarn Modern 4.10.3** - Latest package manager with Zero-Installs support
 - **GitHub Actions CI/CD** - Automated testing and deployment pipeline
 - **Comprehensive test suite** - 33 tests with full coverage of all features
@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Import changes** - ESM imports are now preferred (CJS still supported)
 
 ### Migration Guide
-- Update TypeScript to 5.x for best compatibility
+- Update TypeScript to 5.9.3 for best compatibility
 - Use modern Node.js (20+) for development
 - Consider migrating to ESM imports for better tree-shaking
 - Review any custom WebSocket state checking code (constants changed)
