@@ -57,13 +57,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Coverage reporting** - V8 native coverage with HTML/LCOV outputs
 
 ### Breaking Changes
-- **Node.js requirement** - Now requires Node.js 18+ for modern tooling
+- **Node.js requirement** - Now requires Node.js 20+ for modern tooling
 - **TypeScript requirement** - Projects using this library should use TypeScript 5.x
 - **Import changes** - ESM imports are now preferred (CJS still supported)
 
 ### Migration Guide
 - Update TypeScript to 5.x for best compatibility
-- Use modern Node.js (18+) for development
+- Use modern Node.js (20+) for development
 - Consider migrating to ESM imports for better tree-shaking
 - Review any custom WebSocket state checking code (constants changed)
 

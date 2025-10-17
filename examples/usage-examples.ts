@@ -3,7 +3,7 @@ import WebSocketClient from '../src/index';
 // Example 1: Basic Usage
 console.log('🚀 Example 1: Basic WebSocket Client');
 
-const basicClient = new WebSocketClient('ws://echo.websocket.org');
+const basicClient = new WebSocketClient('wss://echo.websocket.events');
 
 basicClient.addOnOpenHandler(() => {
   console.log('✅ Connected to echo server');
@@ -29,7 +29,7 @@ basicClient.connect();
 console.log('\n🔧 Example 2: Advanced Configuration');
 
 const advancedClient = new WebSocketClient(
-  'ws://echo.websocket.org',
+  'wss://echo.websocket.events',
   ['echo-protocol'],
   {
     shouldReconnect: true,
@@ -61,7 +61,7 @@ setTimeout(() => {
 // Example 3: Connection Management
 console.log('\n⚙️ Example 3: Connection Management');
 
-const managedClient = new WebSocketClient('ws://echo.websocket.org');
+const managedClient = new WebSocketClient('wss://echo.websocket.events');
 
 managedClient.addOnOpenHandler(() => {
   console.log('🟢 Managed client connected');
