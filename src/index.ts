@@ -55,7 +55,7 @@ class WebSocketClient implements IWebSocketClient {
 		if (protocols !== undefined) {
 			this.protocols = protocols;
 		}
-		this.options = { ...this.options, ...options };
+		this.options = { ...this.options, ...(options ?? {}) };
 	}
 
 	// INIT
