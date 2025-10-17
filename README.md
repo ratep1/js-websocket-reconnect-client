@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/js-websocket-reconnect-client.svg)](https://badge.fury.io/js/js-websocket-reconnect-client)
 [![CI/CD](https://github.com/ratep1/js-websocket-reconnect-client/workflows/CI%2FCD/badge.svg)](https://github.com/ratep1/js-websocket-reconnect-client/actions)
+[![codecov](https://codecov.io/gh/ratep1/js-websocket-reconnect-client/branch/master/graph/badge.svg)](https://codecov.io/gh/ratep1/js-websocket-reconnect-client)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
 A lightweight, modern TypeScript WebSocket client library with automatic reconnection capabilities, comprehensive error handling, and full type safety.
