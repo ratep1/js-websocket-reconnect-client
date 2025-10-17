@@ -50,11 +50,7 @@ class WebSocketClient implements IWebSocketClient {
 	onClose?: CloseHandler;
 	onError?: ErrorHandler;
 
-	constructor(
-		url: string,
-		protocols?: string | string[],
-		options?: WebSocketClientOptions,
-	) {
+	constructor(url: string, protocols?: string | string[], options?: WebSocketClientOptions) {
 		this.url = url;
 		if (protocols !== undefined) {
 			this.protocols = protocols;
@@ -234,11 +230,7 @@ class WebSocketClient implements IWebSocketClient {
 	}
 
 	reconnect() {
-		const {
-			reconnectRetryMaxNumber: maxNumber,
-			reconnectRetryTimeout,
-			shouldReconnect,
-		} = this.options;
+		const { reconnectRetryMaxNumber: maxNumber, reconnectRetryTimeout, shouldReconnect } = this.options;
 		if (shouldReconnect && reconnectRetryTimeout) {
 			if (maxNumber && this.retryNumber >= maxNumber) {
 				return;

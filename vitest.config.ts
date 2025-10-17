@@ -36,15 +36,6 @@ export default defineConfig({
 			],
 		},
 		include: ["src/**/__tests__/*.test.ts"],
-		exclude: [
-			"node_modules/", 
-			"dist/", 
-			"examples/", 
-			".yarn/",
-			".github/",
-			".husky/",
-			"coverage/",
-			"**/*.md"
-		],
+		exclude: ["node_modules/", "dist/", "examples/", ".yarn/", ".github/", ".husky/", "coverage/", "**/*.md"],
 	},
 });

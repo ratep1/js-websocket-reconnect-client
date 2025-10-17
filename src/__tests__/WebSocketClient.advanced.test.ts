@@ -98,9 +98,7 @@ class MockWebSocketWithReconnect {
 	}
 
 	static getLastInstance() {
-		return MockWebSocketWithReconnect.instances[
-			MockWebSocketWithReconnect.instances.length - 1
-		];
+		return MockWebSocketWithReconnect.instances[MockWebSocketWithReconnect.instances.length - 1];
 	}
 }
 
@@ -223,10 +221,7 @@ describe("WebSocketClient - Advanced Features", () => {
 
 			await new Promise((resolve) => setTimeout(resolve, 20));
 
-			expect(messageHandler).toHaveBeenCalledWith(
-				"invalid json {",
-				expect.any(Object),
-			);
+			expect(messageHandler).toHaveBeenCalledWith("invalid json {", expect.any(Object));
 		});
 	});
 
@@ -278,9 +273,7 @@ describe("WebSocketClient - Advanced Features", () => {
 			client.restart();
 			await new Promise((resolve) => setTimeout(resolve, 20));
 
-			expect(MockWebSocketWithReconnect.instances.length).toBeGreaterThan(
-				initialInstanceCount,
-			);
+			expect(MockWebSocketWithReconnect.instances.length).toBeGreaterThan(initialInstanceCount);
 			expect(client.shouldRestart).toBe(true);
 		});
 

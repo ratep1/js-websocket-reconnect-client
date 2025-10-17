@@ -1,7 +1,7 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
 	"vcs": {
-		"enabled": false,
+		"enabled": true,
 		"clientKind": "git",
 		"useIgnoreFile": false
 	},
@@ -9,6 +9,9 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"src/**",
+			"*.json",
+			"*.js",
+			"*.ts",
 			"!node_modules",
 			"!dist",
 			"!build",
@@ -23,7 +26,9 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 120
 	},
 	"linter": {
 		"enabled": true,
