@@ -1,13 +1,13 @@
-const STATES: { [key: number]: string } = {
-  1: "CONNECTING",
-  2: "OPEN",
-  3: "CLOSING",
-  4: "CLOSED"
-};
+const STATES = {
+	0: "CONNECTING",
+	1: "OPEN",
+	2: "CLOSING",
+	3: "CLOSED",
+} as const;
 
-const BINARY_TYPES: { [key: string]: string } = {
-  blob: "blob",
-  arraybuffer: "arraybuffer"
-};
+const BINARY_TYPES = {
+	blob: "blob",
+	arraybuffer: "arraybuffer",
+} as const;
 
 export { BINARY_TYPES, STATES };
