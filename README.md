@@ -278,6 +278,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 🐛 Fixed WebSocket state constants bug
 - 🚀 CI/CD pipeline with GitHub Actions
 
+## 📚 Documentation
+
+- [Publishing Guide](docs/PUBLISHING.md) - How to publish new versions
+- [API Reference](docs/API.md) - Complete API documentation
+- [Examples](examples/) - Usage examples and demos
+
 ---
 
 Made with ❤️ by [ratep1](https://github.com/ratep1)
