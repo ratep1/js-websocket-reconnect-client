@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 0.0.15, 0.1.0, 1.0.0)'
+        required: true
+        type: string
+      tag:
+        description: 'NPM tag (latest, beta, alpha)'
+        required: false
+        default: 'latest'
+        type: choice
+        options:
+          - latest
+          - beta
+          - alpha
+      dry_run:
+        description: 'Dry run (test without publishing)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+    
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'yarn'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Enable Corepack
+      run: corepack enable
+    
+    - name: Install dependencies
+      run: yarn install --immutable
+    
+    - name: Run quality checks
+      run: yarn check
+    
+    - name: Run tests with coverage
+      run: yarn test:coverage
+    
+    - name: Build package
+      run: yarn build
+    
+    - name: Update version
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        yarn version --new-version ${{ inputs.version }} --no-git-tag-version
+        git add package.json
+        git commit -m "chore(release): bump version to ${{ inputs.version }}"
+    
+    - name: Create git tag
+      if: ${{ !inputs.dry_run }}
+      run: |
+        git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+        git push origin main --tags
+    
+    - name: Dry run publish
+      if: ${{ inputs.dry_run }}
+      run: yarn publish:dry
+    
+    - name: Publish to NPM (latest)
+      if: ${{ !inputs.dry_run && inputs.tag == 'latest' }}
+      run: yarn release
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Publish to NPM (beta/alpha)
+      if: ${{ !inputs.dry_run && inputs.tag != 'latest' }}
+      run: npm publish --tag ${{ inputs.tag }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Create GitHub Release
+      if: ${{ !inputs.dry_run }}
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: "v${{ inputs.version }}"
+        name: "Release v${{ inputs.version }}"
+        body: |
+          ## What's Changed
+          
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
+          
+          ## Installation
+          
+          ```bash
+          npm install js-websocket-reconnect-client@${{ inputs.version }}
+          # or
+          yarn add js-websocket-reconnect-client@${{ inputs.version }}
+          ```
+        draft: false
+        prerelease: ${{ inputs.tag != 'latest' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

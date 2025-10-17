@@ -1,0 +1,32 @@
+# Global ownership - ratep1 owns everything by default
+* @ratep1
+
+# Core library files - require review from owner
+/src/ @ratep1
+/package.json @ratep1
+/tsconfig.json @ratep1
+
+# Configuration files - require review from owner
+/.github/ @ratep1
+/biome.json @ratep1
+/vite.config.ts @ratep1
+/vitest.config.ts @ratep1
+/.gitignore @ratep1
+/.npmrc @ratep1
+
+# Documentation - can be reviewed by contributors
+/docs/ @ratep1
+/README.md @ratep1
+/CHANGELOG.md @ratep1
+
+# Build and development scripts
+/scripts/ @ratep1
+
+# Examples and tests - can be more permissive
+/examples/ @ratep1
+/src/__tests__/ @ratep1
+
+# Lock files and generated content - typically auto-updated
+yarn.lock
+/dist/
+/coverage/
