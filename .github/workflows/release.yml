@@ -58,7 +58,7 @@ jobs:
       run: |
         git config --local user.email "petar.maric18@gmail.com"
         git config --local user.name "Petar Maric"
-        yarn version --new-version ${{ inputs.version }} --no-git-tag-version
+        yarn version ${{ inputs.version }} --no-git-tag-version
         git add package.json
         git commit -m "chore(release): bump version to ${{ inputs.version }}"
     
