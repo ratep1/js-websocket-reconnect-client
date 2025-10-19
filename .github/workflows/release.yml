@@ -3,9 +3,19 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Release version (e.g., 0.0.15, 0.1.0, 1.0.0)'
+      version_type:
+        description: 'Version increment type'
         required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - custom
+      custom_version:
+        description: 'Custom version (only if version_type is custom)'
+        required: false
         type: string
       tag:
         description: 'NPM tag (latest, beta, alpha)'
@@ -54,18 +64,35 @@ jobs:
     - name: Build package
       run: yarn build
     
-    - name: Update version
+    - name: Determine new version
+      id: version
+      run: |
+        current_version=$(node -p "require('./package.json').version")
+        echo "Current version: $current_version"
+        
+        if [ "${{ inputs.version_type }}" = "custom" ]; then
+          new_version="${{ inputs.custom_version }}"
+        else
+          # Use npm to calculate new version without modifying package.json
+          new_version=$(npm version ${{ inputs.version_type }} --no-git-tag-version --no-commit-hooks 2>/dev/null | sed 's/v//')
+          git checkout -- package.json  # Revert the change made by npm version
+        fi
+        
+        echo "New version: $new_version"
+        echo "version=$new_version" >> $GITHUB_OUTPUT
+    
+    - name: Update version in package.json
       run: |
         git config --local user.email "petar.maric18@gmail.com"
         git config --local user.name "Petar Maric"
-        yarn version ${{ inputs.version }} --no-git-tag-version
+        npm version ${{ steps.version.outputs.version }} --no-git-tag-version --no-commit-hooks
         git add package.json
-        git commit -m "chore(release): bump version to ${{ inputs.version }}"
+        git commit -m "chore(release): bump version to ${{ steps.version.outputs.version }}"
     
     - name: Create git tag
       if: ${{ !inputs.dry_run }}
       run: |
-        git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+        git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
         git push origin master --tags
     
     - name: Dry run publish
@@ -88,8 +115,8 @@ jobs:
       if: ${{ !inputs.dry_run }}
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: "v${{ inputs.version }}"
-        name: "Release v${{ inputs.version }}"
+        tag_name: "v${{ steps.version.outputs.version }}"
+        name: "Release v${{ steps.version.outputs.version }}"
         body: |
           ## What's Changed
           
@@ -98,9 +125,9 @@ jobs:
           ## Installation
           
           ```bash
-          npm install js-websocket-reconnect-client@${{ inputs.version }}
+          npm install js-websocket-reconnect-client@${{ steps.version.outputs.version }}
           # or
-          yarn add js-websocket-reconnect-client@${{ inputs.version }}
+          yarn add js-websocket-reconnect-client@${{ steps.version.outputs.version }}
           ```
         draft: false
         prerelease: ${{ inputs.tag != 'latest' }}
