@@ -41,6 +41,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
+        ref: ${{ github.ref }}
     
     - name: Use Node.js 20.x
       uses: actions/setup-node@v4
@@ -86,14 +87,13 @@ jobs:
         git config --local user.email "petar.maric18@gmail.com"
         git config --local user.name "Petar Maric"
         npm version ${{ steps.version.outputs.version }} --no-git-tag-version --no-commit-hooks
-        git add package.json
-        git commit -m "chore(release): bump version to ${{ steps.version.outputs.version }}"
+        echo "Version updated to ${{ steps.version.outputs.version }}"
     
     - name: Create git tag
       if: ${{ !inputs.dry_run }}
       run: |
         git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
-        git push origin master --tags
+        git push origin "v${{ steps.version.outputs.version }}"
     
     - name: Dry run publish
       if: ${{ inputs.dry_run }}

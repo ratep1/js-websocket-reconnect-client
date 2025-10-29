@@ -143,3 +143,16 @@ npm unpublish js-websocket-reconnect-client@0.0.15
 3. **Verify GitHub release:** Check releases page for automated release
 
 4. **Monitor downloads:** Check npm package page for download stats
+
+## ⚠️ Important Notes
+
+### Protected Branch Policy
+- **Master branch is protected** and requires pull requests for all changes
+- The automated release workflow only creates Git tags - it doesn't modify master directly
+- Version bumps should be done manually through pull requests when needed
+- All package publishing is automated through GitHub Actions once releases are triggered
+
+### Security Requirements
+- Repository requires `NPM_TOKEN` secret for automated publishing
+- `CODECOV_TOKEN` is needed for coverage reporting in pull requests
+- All releases are automatically tagged and documented
