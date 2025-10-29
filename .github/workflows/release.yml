@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version_type:
-        description: 'Version increment type'
+        description: "Version increment type"
         required: true
-        default: 'patch'
+        default: "patch"
         type: choice
         options:
           - patch
@@ -14,20 +14,20 @@ on:
           - major
           - custom
       custom_version:
-        description: 'Custom version (only if version_type is custom)'
+        description: "Custom version (only if version_type is custom)"
         required: false
         type: string
       tag:
-        description: 'NPM tag (latest, beta, alpha)'
+        description: "NPM tag (latest, beta, alpha)"
         required: false
-        default: 'latest'
+        default: "latest"
         type: choice
         options:
           - latest
           - beta
           - alpha
       dry_run:
-        description: 'Dry run (test without publishing)'
+        description: "Dry run (test without publishing)"
         required: false
         default: false
         type: boolean
@@ -35,101 +35,122 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
-        ref: ${{ github.ref }}
-    
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-        cache: 'yarn'
-        registry-url: 'https://registry.npmjs.org'
-    
-    - name: Enable Corepack
-      run: corepack enable
-    
-    - name: Install dependencies
-      run: yarn install --immutable
-    
-    - name: Run quality checks
-      run: yarn check
-    
-    - name: Run tests with coverage
-      run: yarn test:coverage
-    
-    - name: Build package
-      run: yarn build
-    
-    - name: Determine new version
-      id: version
-      run: |
-        current_version=$(node -p "require('./package.json').version")
-        echo "Current version: $current_version"
-        
-        if [ "${{ inputs.version_type }}" = "custom" ]; then
-          new_version="${{ inputs.custom_version }}"
-        else
-          # Use npm to calculate new version without modifying package.json
-          new_version=$(npm version ${{ inputs.version_type }} --no-git-tag-version --no-commit-hooks 2>/dev/null | sed 's/v//')
-          git checkout -- package.json  # Revert the change made by npm version
-        fi
-        
-        echo "New version: $new_version"
-        echo "version=$new_version" >> $GITHUB_OUTPUT
-    
-    - name: Update version in package.json
-      run: |
-        git config --local user.email "petar.maric18@gmail.com"
-        git config --local user.name "Petar Maric"
-        npm version ${{ steps.version.outputs.version }} --no-git-tag-version --no-commit-hooks
-        echo "Version updated to ${{ steps.version.outputs.version }}"
-    
-    - name: Create git tag
-      if: ${{ !inputs.dry_run }}
-      run: |
-        git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
-        git push origin "v${{ steps.version.outputs.version }}"
-    
-    - name: Dry run publish
-      if: ${{ inputs.dry_run }}
-      run: yarn publish:dry
-    
-    - name: Publish to NPM (latest)
-      if: ${{ !inputs.dry_run && inputs.tag == 'latest' }}
-      run: yarn release
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    
-    - name: Publish to NPM (beta/alpha)
-      if: ${{ !inputs.dry_run && inputs.tag != 'latest' }}
-      run: npm publish --tag ${{ inputs.tag }}
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    
-    - name: Create GitHub Release
-      if: ${{ !inputs.dry_run }}
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: "v${{ steps.version.outputs.version }}"
-        name: "Release v${{ steps.version.outputs.version }}"
-        body: |
-          ## What's Changed
-          
-          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
-          
-          ## Installation
-          
-          ```bash
-          npm install js-websocket-reconnect-client@${{ steps.version.outputs.version }}
-          # or
-          yarn add js-websocket-reconnect-client@${{ steps.version.outputs.version }}
-          ```
-        draft: false
-        prerelease: ${{ inputs.tag != 'latest' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: "yarn"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run quality checks
+        run: yarn check
+
+      - name: Run tests with coverage
+        run: yarn test:coverage
+
+      - name: Build package
+        run: yarn build
+
+      - name: Determine new version
+        id: version
+        run: |
+          current_version=$(node -p "require('./package.json').version")
+          echo "Current version: $current_version"
+
+          if [ "${{ inputs.version_type }}" = "custom" ]; then
+            new_version="${{ inputs.custom_version }}"
+          else
+            # Use npm to calculate new version without modifying package.json
+            new_version=$(npm version ${{ inputs.version_type }} --no-git-tag-version --no-commit-hooks 2>/dev/null | sed 's/v//')
+            git checkout -- package.json  # Revert the change made by npm version
+          fi
+
+          echo "New version: $new_version"
+          echo "version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Update version in package.json
+        run: |
+          git config --local user.email "petar.maric18@gmail.com"
+          git config --local user.name "Petar Maric"
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version --no-commit-hooks
+          echo "Version updated to ${{ steps.version.outputs.version }}"
+
+      - name: Create git tag
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+
+      - name: Dry run publish
+        if: ${{ inputs.dry_run }}
+        run: yarn publish:dry
+
+      - name: Publish to NPM (latest)
+        if: ${{ !inputs.dry_run && inputs.tag == 'latest' }}
+        run: yarn release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to NPM (beta/alpha)
+        if: ${{ !inputs.dry_run && inputs.tag != 'latest' }}
+        run: npm publish --tag ${{ inputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "Release v${{ steps.version.outputs.version }}"
+          body: |
+            ## What's Changed
+
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
+
+            ## Installation
+
+            ```bash
+            npm install js-websocket-reconnect-client@${{ steps.version.outputs.version }}
+            # or
+            yarn add js-websocket-reconnect-client@${{ steps.version.outputs.version }}
+            ```
+          draft: false
+          prerelease: ${{ inputs.tag != 'latest' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for package.json changes
+        id: pkg_changed
+        run: |
+          # If package.json differs from HEAD, mark changed=true
+          if git diff --quiet -- package.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create version bump PR
+        if: ${{ !inputs.dry_run && steps.pkg_changed.outputs.changed == 'true' }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(release): bump version to ${{ steps.version.outputs.version }}"
+          branch: "release/v${{ steps.version.outputs.version }}"
+          title: "chore(release): bump version to v${{ steps.version.outputs.version }}"
+          body: "Automated version bump for release v${{ steps.version.outputs.version }}"
+          labels: release

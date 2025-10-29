@@ -205,6 +205,16 @@ const buffered = client.getBufferedAmount();
 ### Prerequisites
 - Node.js 16.x or higher
 - npm or yarn
+- Node.js 20.x or higher (recommended for modern tooling)
+
+If you prefer Yarn (recommended for this repo) make sure Corepack is enabled so `yarn` is available in zsh:
+
+```zsh
+# enable Corepack (bundled with Node 16.10+)
+corepack enable
+# prepare and activate the stable Yarn release
+corepack prepare yarn@stable --activate
+```
 
 ### Setup
 ```bash
@@ -212,9 +222,13 @@ const buffered = client.getBufferedAmount();
 git clone https://github.com/ratep1/js-websocket-reconnect-client.git
 cd js-websocket-reconnect-client
 
-# Install dependencies
+# Install dependencies (enable Corepack first if `yarn` is missing)
+corepack enable || true
+corepack prepare yarn@stable --activate || true
+
+# Install with yarn (preferred)
 yarn install
-# or
+# or fallback to npm
 npm install
 
 # Run tests

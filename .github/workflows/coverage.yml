@@ -2,7 +2,7 @@ name: Coverage
 
 on:
   pull_request:
-    branches: [ master, main ]
+    branches: [ master, main, develop ]
 
 permissions:
   contents: read
