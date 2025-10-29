@@ -5,7 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.14] - 2025-10-18
+## [0.0.15] - 2025-10-29
+
+### 🛠 Release workflow changes
+
+- Switched to tag-driven releases: CI publishes when a tag starting with `v` (e.g. `v0.0.15`) is pushed.
+- The workflow no longer commits version bumps to the protected `master` branch. Version commits should be done via pull requests; releases are created from tags.
+- Documentation updated to reflect protected-branch policy and tag-based publishing.
+
+### 🧭 Local developer notes
+
+- The repository uses Yarn (modern) as the preferred package manager. If `yarn` is not available locally, enable Corepack and activate Yarn:
+
+```zsh
+corepack enable
+corepack prepare yarn@stable --activate
+yarn --version
+```
+
+This ensures `yarn` (Berry) is available in zsh shells without a separate global install.
+
 
 ### 🎉 Complete Project Modernization
 
